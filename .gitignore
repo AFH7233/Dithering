@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# latex extensions
+.log
+.aux
+.synctex.gz
+
 # C extensions
 *.so
 
