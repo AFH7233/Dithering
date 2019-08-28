@@ -1,0 +1,87 @@
+El metodo de Floyd Steinberg para dithering, es un metodo de difusion del error
+y surge debido a que los metodos de dithering como el ordenado dependen de crear 
+una matriz n x m en la que se utilizan patrones de cuadros blancos y negros que 
+emulan las escalas de grises, estos metodos tienen como consecuencia la perdida 
+de resolucion o bien una imagen de salida con dimensiones superiores a la original.
+Este metodo que surgio en 1976, busca mantener el mismo tamaño de imagen repartiendo
+el error generado al binarizar ese pixel hacia los pixeles vecinos, pero solo aquellos
+"adelante" y por "debajo" de el es decir no se repartira el error a pixeles ya visitados.
+
+
+
+Desarrollo:
+Se utilizo python 3 con las bibliotecas numpy ,scipi  y skimage. Se utilizó el 
+algoritmo de Floyd Steinberg para las 3 capas de color R,G,B para asi obtener un
+dithering en 3 dimensiones. El programa es el siguiente:
+
+import numpy as np
+
+def share_error(Dithered, quant_error, x, y):
+        Xmax = Dithered.shape[0]
+        Ymax = Dithered.shape[1]
+        if(x + 1 < Xmax):
+                Dithered[x + 1, y    ] = Dithered[x + 1, y    ] + (quant_error * 7 / 16)
+        
+        if(x - 1 > 0 and (y + 1 <Ymax)):
+                Dithered[x - 1, y + 1] = Dithered[x - 1, y + 1] + (quant_error * 3 / 16)
+        
+        if(y + 1 < Ymax):
+                Dithered[x    , y + 1] = Dithered[x    , y + 1] + (quant_error * 5 / 16)
+        
+        if((x + 1 < Xmax) and (y + 1 <Ymax)):
+                Dithered[x + 1, y + 1] = Dithered[x + 1, y + 1] + (quant_error * 1 / 16)
+
+
+def dither_image(Img):
+        Shape = Img.shape
+        Dithered = np.copy(Img)/255
+        for i in range(0, Shape[0]):
+                for j in range(0, Shape[1]):
+                        for k in range (0,Shape[2]):
+                                oldPixel = Dithered[i,j,k]
+                                newPixel = np.round(oldPixel)
+                                error = oldPixel - newPixel
+                                Dithered[i,j,k] = newPixel
+                                share_error(Dithered[:,:,k], error, i, j)
+        
+        return np.round(Dithered)
+
+
+Para observar el comportamiento del algoritmo se eligieron 3 imagenes, "Lena", un bosque y
+una imagen artifical de triangulos y colores. En la imagen de lena Fig1 se puede observar
+que la imagen con dithering es una buena representacion de la original Fig 2, los rasgos del rostro humano
+se peuden distinguir facilmente, tambien es posible notar ciertos patrones en forma
+de "grecas" aparecen en la imagen esto puede deberse a la forma en la que el algoritmo distribuye el ruido.
+
+
+Fig1.jpg  Fig2.jpg
+
+
+Tambien se utilizo una imagen de un bosque Fig3, ya que se queria ver si los detalles de las ojas de los pinos
+se preservaban en la imagen con dithering Fig 4, ademas esta imagen tiene un brillo en la esquina superior izquierda.
+En el resultado se peude ver que una gran porcion de la imagen es blanca debido al brillo sin embargo los pinosy algunos
+de sus detalles aun se pueden distinguir con facilidad, incluso el paisaje de fondo ,el cual en la imagen original 
+esta desenfocado y tiene un alto brillo, es posible distinguirlo en la imagen con dithering
+
+Fig3 Fig 4
+
+
+Finalmente el algoritmo se puso a prueba con una imagen artificial es decir no es la representacion
+de nuestro mundo. LA imagen fig 5 consiste de una serie de triangulos de diferentes colores, el objetivo de 
+esta prueba es ver la eficiencia del algoritmo con color uniformes y en los contornos. En la Fig 6
+se puede observar de una manera mas clara el ruido en forma de "grecas" y en general aunque la imagen
+asemeja la original tiene un ruido significativo. Los triangulos mas afectados por este ruido
+son aquellos de color claro que se encuentran junto a un color mas obscuro. Es posible observar 
+franjas del color adyacente en dichos triangulos.
+
+Fig 5 Fig 6
+
+
+Conclusiones
+
+El algoritmo de Floyd Steinberg  para dithering produce una buena aproximacion a la imagen original
+utilizando solo 1 bit por color. Aunque aun es posible ver ciertos patrones sobre todo en lugares
+de color uniforme que tienen vecindad con un color mas obscuro, cierta "contaminacion" se puede producir.
+
+
+
