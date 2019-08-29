@@ -117,7 +117,7 @@ Se puede observar que tanto en partes oscuras y claras hay puntos negros y blanc
 
 En esta técnica se utilizan matrices de $N\times N$ donde cada pixel de la imagen original es mapeado por la operación módulo $N$ a la matriz definida, también es importante mencionar que el valor de cada pixel se escala de sus posibles valores en $[0,255]$ a un intervalo de $[0,N]$ para poder comparar con los valores de la matriz, en donde si es menor o igual el resultado es $0$, en otro caso es en $1$.
 
-Para este ejemplo, se utilizarán tres matrices, las cuales son:
+Para este ejemplo, se utilizarán tres matrices, las cuales son\cite{b3}:
 
 $d_2=\begin{matrix}
 	3 & 1\\
@@ -146,7 +146,7 @@ $d_4=\begin{matrix}
 
 En la figura \ref{ordered}, se pueden observar los diferentes resultados de la misma imagen utilizando este método con diferentes tamaños de matrices, en orden de arriba a abajo d2, d3, d4.
 
-Donde se puede observar que matrices más grandes generan mejores resultados.
+Donde se puede observar que matrices más grandes generan mejores resultados. Pero una desventaja es que los patrones de las matrices son visibles, sobre todo en matrices pequeñas.
 
 %-------------------------------------------------------------------------------
 \subsection{\textit{Shared Error Dithering Color}}
@@ -203,8 +203,7 @@ de nuestro mundo. La última prueba consiste de una serie de triángulos de dife
 %-------------------------------------------------------------------------------
 \subsection{\textit{Shared Error Dithering}}
 
-
-
+Esta implementación, al igual que la anterior, pero en un solo canal y un bit de profundidad, se puede apreciar un resultado con calidad similar al de \textit{Ordered Dither} de una matriz de $4\times 4$, sin embargo, aquí no hay patrones visibles.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[height=50mm]{code/lena}}
@@ -213,15 +212,24 @@ de nuestro mundo. La última prueba consiste de una serie de triángulos de dife
 \label{errorGray}
 \end{figure}
 
+Sin embargo, este algoritmo es el que tarda más en ejecutarse pero ofrece resultados buenos, manteniendo características de la imagen, como los bordes del sombrero y partes de las plumas del mismo.
 
 %-------------------------------------------------------------------------------
 %	SECTION 2
 %-------------------------------------------------------------------------------
 \section{Conclusiones}
 
-El algoritmo de Floyd Steinberg  para dithering produce una buena aproximacion a la imagen original
-utilizando solo 1 bit por color. Aunque aun es posible ver ciertos patrones sobre todo en lugares
-de color uniforme que tienen vecindad con un color mas obscuro, cierta "contaminacion" se puede producir.
+En general, los diferentes métodos de \textit{dithering} implementados muestran resultados donde se puede apreciar la imagen original con al menos unos detalles.
+
+El peor de los métodos fue el aleatorio, donde la imagen resultante tiene mucho ruido.
+
+Posteriormente, el \textit{dither} ordenado muestra un buen desempeño, pero depende de poder crear las matrices de $N \times N$, mientras más grande sea $N$, los resultados son mejores, sin embargo, los patrones de estas matrices son claros a simple vista.
+
+El algoritmo de \textit{Floyd Steinberg}  para \textit{dithering} produce una buena aproximación a la imagen original utilizando solo 1 bit por color. Aunque aun es posible ver ciertos patrones sobre todo en lugares de color uniforme que tienen vecindad con un color mas obscuro, cierta \textit{contaminación} se puede producir.
+
+Este último algoritmo muestra los mejores resultados, preservando suficientes detalles de la imagen original, sin embargo el tiempo de procesamiento es el mayor de todos.
+
+Por lo que se recomienda \textit{Shared Error Dithering} para generar este tipo de imágenes cuando el dispositivo en donde se visualizará tiene solo un color, sin embargo si lo que se busca es velocidad de respuesta \textit{Ordered Dithering} es una buena opción, con una matriz de tamaño 3 o 4.
 
 
 %-------------------------------------------------------------------------------
