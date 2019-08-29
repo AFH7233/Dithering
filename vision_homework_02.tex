@@ -28,7 +28,7 @@
 %-------------------------------------------------------------------------------
 %	DOCUMENT INFORMATION
 %-------------------------------------------------------------------------------
-\title{Dithering\\
+\title{Tarea 2 - Dithering\\
 %{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and should not be used}
 %\thanks{Identify applicable funding agency here. If none, delete this.}
 }
@@ -65,11 +65,11 @@ dithering, Floyd Steinberg, random, ordered, shared error, python, opencv
 %-------------------------------------------------------------------------------
 \section{Introducción}
 
-El uso del \textit{dithering} permite poder mostrar imágenes en formatos que tengan una cantidad menor de color de profundidad, que para el caso de ésta tarea, será 1 bit.
+El uso del \textit{dithering} permite poder mostrar imágenes en formatos que tengan una cantidad menor de color de profundidad, que para el caso de esta tarea, será 1 bit.
 
 Esta técnica es empleada en las impresiones de periódicos o formatos en donde se tiene solo una tinta o color de profundidad de 1 bit, para lograr obtener una mayor resolución radiométrica, pero a su vez sacrificando resolución espacial, esto se logra aprovechando la integración espacial dentro del ojo humano\cite{b1}.
 
-El objetivo es mostrar las diferencias entre diferentes implementaciones de \textit{dithering}, que son: \textit{dither ordenado}, \textit{dither aleatorio} y \textit{dither difusión de error}. Con variaciones en parámetros de algunas de éstas y una versión en color de difusión de error.
+El objetivo es mostrar las diferencias entre algunas implementaciones de \textit{dithering}, que son: \textit{dither ordenado}, \textit{dither aleatorio} y \textit{dither difusión de error}. Con variaciones en parámetros de algunas de éstas y una versión en color de difusión de error.
 
 
 %-------------------------------------------------------------------------------
@@ -111,6 +111,14 @@ Esta variante de \textit{dithering} es la más sencilla de implementar, sin emba
 
 Se puede observar que tanto en partes oscuras y claras hay puntos negros y blancos, por lo que esta técnica agrega mucho ruido al resultado.
 
+A continuación se muestra el código de este método:
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=80mm]{code/random_dither}}
+\caption{Código para \textit{random dither}.}
+\label{randomPy}
+\end{figure}
+
 
 %-------------------------------------------------------------------------------
 \subsection{\textit{Ordered Dithering}}
@@ -148,6 +156,14 @@ En la figura \ref{ordered}, se pueden observar los diferentes resultados de la m
 
 Donde se puede observar que matrices más grandes generan mejores resultados. Pero una desventaja es que los patrones de las matrices son visibles, sobre todo en matrices pequeñas.
 
+A continuación se muestra el código de este método:
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=80mm]{code/ordered_dither}}
+\caption{Código para \textit{random dither}.}
+\label{orderedPy}
+\end{figure}
+
 %-------------------------------------------------------------------------------
 \subsection{\textit{Shared Error Dithering Color}}
 El método de \textit{Floyd Steinberg} para \textit{dithering}, es un método de difusión del error
@@ -172,7 +188,7 @@ se puede observar que la imagen con \textit{dithering} es una buena representaci
 \begin{figure}[htbp]
 \centerline{\includegraphics[height=50mm]{code/lena}}
 \centerline{\includegraphics[height=50mm]{code/Fig1}}
-\caption{Ejemplo de \textit{ordered dither} utlizando las matrices d2, d3, d4.}
+\caption{Ejemplo de \textit{shared error dither} con Lena.}
 \label{errorColorLena}
 \end{figure}
 
@@ -185,7 +201,7 @@ En la figura \ref{errorColorTree} se puede ver que una gran porción de la image
 \begin{figure}[htbp]
 \centerline{\includegraphics[height=50mm]{code/bosque}}
 \centerline{\includegraphics[height=50mm]{code/bosque1}}
-\caption{Ejemplo de \textit{ordered dither} utlizando las matrices d2, d3, d4.}
+\caption{Ejemplo de \textit{shared error dither} con el bosque.}
 \label{errorColorTree}
 \end{figure}
 
@@ -196,7 +212,7 @@ de nuestro mundo. La última prueba consiste de una serie de triángulos de dife
 \begin{figure}[htbp]
 \centerline{\includegraphics[height=50mm]{code/colors}}
 \centerline{\includegraphics[height=50mm]{code/colors1}}
-\caption{Ejemplo de \textit{ordered dither} utlizando las matrices d2, d3, d4.}
+\caption{Ejemplo de \textit{shared error dither} con triángulos.}
 \label{errorColorTriangle}
 \end{figure}
 
@@ -208,11 +224,18 @@ Esta implementación, al igual que la anterior, pero en un solo canal y un bit d
 \begin{figure}[htbp]
 \centerline{\includegraphics[height=50mm]{code/lena}}
 \centerline{\includegraphics[height=50mm]{code/error_dither_lena}}
-\caption{Ejemplo de \textit{random dither}.}
+\caption{Ejemplo de \textit{shared error dither} en 1 bit.}
 \label{errorGray}
 \end{figure}
 
 Sin embargo, este algoritmo es el que tarda más en ejecutarse pero ofrece resultados buenos, manteniendo características de la imagen, como los bordes del sombrero y partes de las plumas del mismo.
+A continuación se muestra el código de este método:
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=80mm]{code/error_dither}}
+\caption{Código para \textit{random dither}.}
+\label{esrrorPy}
+\end{figure}
 
 %-------------------------------------------------------------------------------
 %	SECTION 2
