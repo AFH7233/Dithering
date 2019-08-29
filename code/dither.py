@@ -35,13 +35,17 @@ def random_dither(name):
 	cv.SaveImage("random_dither_"+name.split(".")[0]+".png", out)
 	cv.WaitKey(0)
 
-def ordered_dither(name):
+def ordered_dither(name, size):
 	img = cv.LoadImage(name, cv.CV_LOAD_IMAGE_GRAYSCALE)
 	x,y = cv.GetSize(img)
 	out = cv.CreateImage((x,y),8,1)
 
-	d = [[3,1],[0,2]]
-#	d = [[1,9,3,11],[13,5,15,7],[4,12,2,10],[16,8,14,6]]
+	d2 = [[3,1],[0,2]]
+	d3 = [[0,7,3],[6,5,2],[4,1,8]]
+	d4 = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]]
+	if size==2: d=d2
+	elif size==3: d=d3
+	else: d=d4
 	n = len(d)
 
 	for i in xrange(x):
@@ -51,9 +55,9 @@ def ordered_dither(name):
 			else:
 				out[j,i] = 255
 
-	cv.ShowImage("ordered_dither", out)
-	cv.MoveWindow("ordered_dither", 0, 0)
-	cv.SaveImage("ordered_dither_"+name.split(".")[0]+".png", out)
+	cv.ShowImage("ordered_dither"+str(size), out)
+	cv.MoveWindow("ordered_dither"+str(size), 0, 0)
+	cv.SaveImage("ordered_dither_"+str(size)+"_"+name.split(".")[0]+".png", out)
 	cv.WaitKey(0)
 
 def error_dither(name):
@@ -76,7 +80,7 @@ def error_dither(name):
 
 	cv.ShowImage("error_dither", img)
 	cv.MoveWindow("error_dither", 0, 0)
-	cv.SaveImage("error_dither_"+name.split(".")[0]+".png", out)
+	cv.SaveImage("error_dither_"+name.split(".")[0]+".png", img)
 	cv.WaitKey(0)
 
 def show_all(name):
@@ -85,7 +89,9 @@ def show_all(name):
 	quantize(name, 2)
 	quantize(name, 1)
 	random_dither(name)
-	ordered_dither(name)
+	ordered_dither(name,2)
+	ordered_dither(name,3)
+	ordered_dither(name,4)
 	error_dither(name)
 
 
